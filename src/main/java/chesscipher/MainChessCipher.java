@@ -31,6 +31,9 @@ public class MainChessCipher {
         System.out.println("plain : " + plainText);
         System.out.println("cipher: "+ cipherText);
         System.out.println("revrsd: "+ decryptedText);
+        
+        System.out.println();
+        System.out.println("tmpData:" + cipher.getData().getTmpData());
     }
     
 }

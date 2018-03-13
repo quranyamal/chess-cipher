@@ -31,6 +31,23 @@ public class ChessBoard {
         System.out.println("'" + str + "' to binary: " + binary);
     }
     
+    byte encodeBools(boolean[] bools){
+      byte val = 0;
+      for (boolean b: bools) {
+        val <<= 1;
+        if (b) val |= 1;
+      }
+      return val;
+    }
+    
+    @Override
+    public String toString() {
+        char[] chars = new char[8];
+        for (int i=0; i<SIZE; i++) {
+            chars[i] = (char) encodeBools(matrix[i]);
+        }
+        return String.valueOf(chars);
+    }
     
     public void printBoard() {
         System.out.println("Board:");
