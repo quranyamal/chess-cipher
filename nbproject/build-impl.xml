@@ -204,12 +204,12 @@ is divided into following sections:
         <available file="${meta.inf.dir}/persistence.xml" property="has.persistence.xml"/>
         <condition property="junit.available">
             <or>
-                <available classname="org.junit.Test" classpath="${run.test.classpath}"/>
-                <available classname="junit.framework.Test" classpath="${run.test.classpath}"/>
+                <available classname="org.junit.chesschipher.ChessLibTest" classpath="${run.test.classpath}"/>
+                <available classname="junit.framework.chesschipher.ChessLibTest" classpath="${run.test.classpath}"/>
             </or>
         </condition>
         <condition property="testng.available">
-            <available classname="org.testng.annotations.Test" classpath="${run.test.classpath}"/>
+            <available classname="org.testng.annotations.chesschipher.ChessLibTest" classpath="${run.test.classpath}"/>
         </condition>
         <condition property="junit+testng.available">
             <and>
@@ -1290,7 +1290,7 @@ is divided into following sections:
         <mkdir dir="${build.test.results.dir}"/>
     </target>
     <target depends="init,compile-test,-pre-test-run" if="have.tests" name="-do-test-run">
-        <j2seproject3:test includes="${includes}" testincludes="**/*Test.java"/>
+        <j2seproject3:test includes="${includes}" testincludes="**/*chesschipher.ChessLibTest.java"/>
     </target>
     <target depends="init,compile-test,-pre-test-run,-do-test-run" if="have.tests" name="-post-test-run">
         <fail if="tests.failed" unless="ignore.failing.tests">Some tests failed; see details above.</fail>
