@@ -1,31 +1,36 @@
-package chesscipher;
+package main.java.chesscipher;
 
-import chesscipher.model.ChessCipherData;
-import chesscipher.model.ChessCipherKey;
+import main.java.chesscipher.model.ChessCipherData;
+import main.java.chesscipher.model.ChessCipherKey;
 
 public class MainChessCipher {
 
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         
-        String plainText = "COBA DATANYA STRING DULU";
-        ChessCipher chessCipher = new ChessCipher();
+        encryptDecryptTest1();
         
-        chessCipher.setData(plainText);
-        chessCipher.setKey("AABC");
+    }
+
+    static void encryptDecryptTest1() {
+        ChessCipher cipher = new ChessCipher();
+        String plainText = "COBA DATANYA STRING DULU!!";
+        cipher.setData(plainText);
+        cipher.setKey("AABC");
         
-        chessCipher.encrypt();
-        String cipherText = chessCipher.getData().toString();
+        cipher.encrypt();
+        String cipherText = cipher.getData().toString();
         
-        chessCipher.decrypt();
-        String decryptedText = chessCipher.getData().toString();
+        cipher.decrypt();
+        String decryptedText = cipher.getData().toString();
         
+        System.out.println();
         System.out.println("plain : " + plainText);
         System.out.println("cipher: "+ cipherText);
         System.out.println("revrsd: "+ decryptedText);
-        
     }
     
 }

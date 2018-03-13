@@ -1,4 +1,4 @@
-package chesscipher.model;
+package main.java.chesscipher.model;
 
 public class ChessCipherKey {
     // nanti disesuaikan
