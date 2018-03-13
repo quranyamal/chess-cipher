@@ -4,12 +4,12 @@ public class ChessCipherData {
     private String dataStr;
     
     public int numBlock;
-    private ChessBoard blocks[];    // chess board = data block
+    private CCBoard blocks[];    // chess board = data block
     
     public ChessCipherData(String data) {
         dataStr = data;
         numBlock = 99; // todo
-        blocks = new ChessBoard[numBlock];
+        blocks = new CCBoard[numBlock];
         initBlocks();
     }
     
@@ -32,7 +32,7 @@ public class ChessCipherData {
         dataStr = str;
     }
     
-    public ChessBoard getBlock(int i) {
+    public CCBoard getBlock(int i) {
         return blocks[i];
     }
     
