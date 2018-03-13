@@ -7,9 +7,6 @@ repositories{
 }
 
 dependencies{
-    // https://mvnrepository.com/artifact/com.marcelotomazini/chess
-    compile group: 'com.marcelotomazini', name: 'chess', version: '0.1.17'
-
     // https://mvnrepository.com/artifact/org.json/json
     compile group: 'org.json', name: 'json', version: '20180130'
 
