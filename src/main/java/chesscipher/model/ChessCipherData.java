@@ -37,9 +37,9 @@ public class ChessCipherData {
         if (subStr.length()==8) {
             System.out.println("LAST BLOCK IS NOT PADDED");
         } else {
-            System.out.println("LAST BLOCK IS PADDED WITH '%'");
+            System.out.println("LAST BLOCK IS PADDED");
             for (int i=subStr.length(); i<BOARD_SIZE; i++) {
-                subStr = subStr + "%";
+                subStr = subStr + (char)0;
             }
         }
         blocks[numBlock-1] = new ChessBoard(subStr);

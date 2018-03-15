@@ -91,10 +91,14 @@ public abstract class Rule {
 	}
 	
 	public void moveWithoutVerification(Position to) throws PromotionException {
-		Piece piece = board.getPiece(from);
-		board.put(piece, to);
-		board.clear(from);
-		piece.setFirstMove(false);
+		if (from.equals(to)){
+			return;
+		}
+		Piece pieceFrom = board.getPiece(from);
+		Piece pieceTo = board.getPiece(to);
+		board.put(pieceFrom,to);
+		board.put(pieceTo,from);
+		pieceFrom.setFirstMove(false);
 		aditionalMoves(board, from, to);
 	}
 

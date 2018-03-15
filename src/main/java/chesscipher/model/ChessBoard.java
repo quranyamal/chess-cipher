@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 
 public class ChessBoard {
     private static final int SIZE = 8;
-    private boolean[][] matrix;
+    private boolean[][] matrix; // !=0 -> true, 0->false
     
     /* precondition: str length==SIZE */
     public ChessBoard(String str) {

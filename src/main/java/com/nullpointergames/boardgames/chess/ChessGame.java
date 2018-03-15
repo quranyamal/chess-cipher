@@ -55,8 +55,10 @@ public class ChessGame {
 		final Position to = new Position(dest);
 		Rule rule = RuleFactory.getRule(board,from);
 		List<Position> possibleMoves = rule.possibleMoves();
-		if(possibleMoves.isEmpty())
+		if(possibleMoves.isEmpty()){
+			moveWithoutVerification(from,from);
 			return;
+		}
 
 		Position minPos = possibleMoves.get(0);
 		double minDist = to.getDistance(minPos);
@@ -91,6 +93,29 @@ public class ChessGame {
 		
 		move(board, from, to);
 		nextTurn();
+	}
+
+	public void moveWithoutVerification(CCPieceType pieceType, int dest) throws PromotionException {
+		final Position from = positionMap.get(pieceType);
+		final Position to = new Position(dest);
+		Rule rule = RuleFactory.getRule(board,from);
+		List<Position> possibleMoves = rule.possibleMoves();
+		if(possibleMoves.isEmpty()){
+			moveWithoutVerification(from,from);
+			return;
+		}
+
+		Position minPos = possibleMoves.get(0);
+		double minDist = to.getDistance(minPos);
+		for(int i=1;i<possibleMoves.size();i++){
+			double dist = to.getDistance(possibleMoves.get(i));
+			if(dist<minDist){
+				minDist = dist;
+				minPos = possibleMoves.get(i);
+			}
+		}
+
+		moveWithoutVerification(from,minPos);
 	}
 
 	public void moveWithoutVerification(CCPieceType pieceType, final Position to){
