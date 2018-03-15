@@ -1,0 +1,23 @@
+package com.nullpointergames.boardgames.chess;
+
+import com.nullpointergames.boardgames.PieceColor;
+
+import java.util.ArrayList;
+
+public enum CCPieceType {
+    WHITE_PAWN1,WHITE_PAWN2,WHITE_PAWN3,WHITE_PAWN4,WHITE_PAWN5,WHITE_PAWN6,WHITE_PAWN7,WHITE_PAWN8,
+    WHITE_ROOK1,WHITE_ROOK2,WHITE_KNIGHT1,WHITE_KNIGHT2,WHITE_BISHOP1,WHITE_BISHOP2,WHITE_QUEEN,WHITE_KING,
+    BLACK_PAWN1,BLACK_PAWN2,BLACK_PAWN3,BLACK_PAWN4,BLACK_PAWN5,BLACK_PAWN6,BLACK_PAWN7,BLACK_PAWN8,
+    BLACK_ROOK1,BLACK_ROOK2,BLACK_KNIGHT1,BLACK_KNIGHT2,BLACK_BISHOP1,BLACK_BISHOP2,BLACK_QUEEN,BLACK_KING;
+
+    public static CCPieceType getCCPieceType(PieceColor color, int pieceId){
+        return CCPieceTypeList.get(pieceId+((color.equals(PieceColor.WHITE))?0:16));
+    }
+
+    public static ArrayList<CCPieceType> CCPieceTypeList = new ArrayList<CCPieceType>(){{
+        add(WHITE_PAWN1);add(WHITE_PAWN2);add(WHITE_PAWN3);add(WHITE_PAWN4);add(WHITE_PAWN5);add(WHITE_PAWN6);add(WHITE_PAWN7);add(WHITE_PAWN8);
+        add(WHITE_ROOK1);add(WHITE_ROOK2);add(WHITE_KNIGHT1);add(WHITE_KNIGHT2);add(WHITE_BISHOP1);add(WHITE_BISHOP2);add(WHITE_QUEEN);add(WHITE_KING);
+        add(BLACK_PAWN1);add(BLACK_PAWN2);add(BLACK_PAWN3);add(BLACK_PAWN4);add(BLACK_PAWN5);add(BLACK_PAWN6);add(BLACK_PAWN7);add(BLACK_PAWN8);
+        add(BLACK_ROOK1);add(BLACK_ROOK2);add(BLACK_KNIGHT1);add(BLACK_KNIGHT2);add(BLACK_BISHOP1);add(BLACK_BISHOP2);add(BLACK_QUEEN);add(BLACK_KING);
+    }};
+}
