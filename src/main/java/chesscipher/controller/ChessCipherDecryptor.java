@@ -1,27 +1,40 @@
 package chesscipher.controller;
 
+import chesscipher.controller.util.SwapEntry;
 import chesscipher.model.ChessBoard;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
+import com.nullpointergames.boardgames.PieceColor;
+import com.nullpointergames.boardgames.chess.ChessGame;
+import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
 import chesscipher.model.ChessGlobVar;
 
 import java.util.Arrays;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChessCipherDecryptor extends ChessCipherBase{
+    static List<SwapEntry> swapEntries = new ArrayList<>();
 public class ChessCipherDecryptor {
     static int SIZE = ChessBoard.SIZE;
 
     public static void decrypt(ChessCipherData data, ChessCipherKey key) {
+        System.out.println("=======");
         key.resetRoundState();
 
         for (int i=0; i<data.numBlock; i++) {
-            decryptBlock(data.getBlock(i), key.getSubKey());
+            decryptBlock(data.getBlock(i), key);
         }
 
     }
 
-    public static void decryptBlock(ChessBoard block, String subKey) {
-        revertSBox(block);
-        shiftLeft(block, subKey);
+    public static void decryptBlock(ChessBoard block, ChessCipherKey key) {
+        chessGame = new ChessGame(PieceColor.WHITE);
+        String subKey = key.getSubKey();
+//        shiftBlockLeft(block, subKey);
+
+        chessPermutation(block,key);
         // todo
     }
 
@@ -58,4 +71,21 @@ public class ChessCipherDecryptor {
         }
     }
 
+    private static void chessPermutation(ChessBoard block, ChessCipherKey key){
+        swapEntries.clear();
+        for(int i=0;i<MOVE_LIMIT;i++){
+            try {
+                swapEntries.add(i,chessGame.getSwapEntry(key.nextPiece(),key.nextDest(),block));
+            } catch (PromotionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(int i=swapEntries.size()-1;i>=0;i--){
+            SwapEntry swapEntry = swapEntries.get(i);
+            boolean temp = block.matrix[swapEntry.from.row()-1][swapEntry.from.col()-'a'];
+            block.matrix[swapEntry.from.row()-1][swapEntry.from.col()-'a'] = block.matrix[swapEntry.to.row()-1][swapEntry.to.col()-'a'];
+            block.matrix[swapEntry.to.row()-1][swapEntry.to.col()-'a'] = temp;
+        }
+    }
 }

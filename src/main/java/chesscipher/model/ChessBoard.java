@@ -2,6 +2,9 @@ package chesscipher.model;
 
 public class ChessBoard {
     public static final int SIZE = 8;
+    public boolean[][] matrix; // !=0 -> true, 0->false
+
+    /* precondition: str length==SIZE */
     private boolean[][] matrix;
 
     public ChessBoard(boolean[][] mtr) {
@@ -9,6 +12,7 @@ public class ChessBoard {
     }
 
     public ChessBoard(String str) {
+        if (str.length()!=SIZE) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
         matrix = new boolean[SIZE][SIZE];
         setMatrix(str);
     }
@@ -67,6 +71,7 @@ public class ChessBoard {
         for (int i=0; i<8; i++) {
             for (int j=0; j<8; j++) {
                 System.out.print(matrix[i][j]?1 + " " : 0 + " ");
+                System.out.print(((matrix[i][j])?1:0) + " ");
             }
             System.out.println();
         }
@@ -78,7 +83,7 @@ public class ChessBoard {
             System.out.println(getByte(i) + " ");
         }
     }
-    
+
     public static void main(String args[]) {
         ChessBoard board1 = new ChessBoard("ABCDEFGH");
         ChessBoard board2 = new ChessBoard("AABBCCDD");

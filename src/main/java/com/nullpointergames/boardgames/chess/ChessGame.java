@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import chesscipher.controller.util.SwapEntry;
+import chesscipher.model.ChessBoard;
 import com.nullpointergames.boardgames.*;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
 import com.nullpointergames.boardgames.chess.rules.PawnRule;
@@ -95,14 +97,28 @@ public class ChessGame {
 		nextTurn();
 	}
 
-	public void moveWithoutVerification(CCPieceType pieceType, int dest) throws PromotionException {
+	public SwapEntry getSwapEntry(CCPieceType pieceType, int dest, ChessBoard board) throws PromotionException {
+		Position validDest = moveWithoutVerification(pieceType,dest);
+		final Position from = positionMap.get(pieceType);
+		return new SwapEntry(from,validDest);
+	}
+
+	public void moveWithoutVerification(CCPieceType pieceType, int dest, ChessBoard board) throws PromotionException {
+		Position validDest = moveWithoutVerification(pieceType,dest);
+		final Position from = positionMap.get(pieceType);
+		boolean temp = board.matrix[from.row()-1][from.col()-'a'];
+		board.matrix[from.row()-1][from.col()-'a'] = board.matrix[validDest.row()-1][validDest.col()-'a'];
+		board.matrix[validDest.row()-1][validDest.col()-'a'] = temp;
+	}
+
+	public Position moveWithoutVerification(CCPieceType pieceType, int dest) throws PromotionException {
 		final Position from = positionMap.get(pieceType);
 		final Position to = new Position(dest);
 		Rule rule = RuleFactory.getRule(board,from);
 		List<Position> possibleMoves = rule.possibleMoves();
 		if(possibleMoves.isEmpty()){
 			moveWithoutVerification(from,from);
-			return;
+			return from;
 		}
 
 		Position minPos = possibleMoves.get(0);
@@ -116,6 +132,7 @@ public class ChessGame {
 		}
 
 		moveWithoutVerification(from,minPos);
+		return minPos;
 	}
 
 	public void moveWithoutVerification(CCPieceType pieceType, final Position to){

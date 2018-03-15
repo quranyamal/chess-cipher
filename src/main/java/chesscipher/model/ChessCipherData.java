@@ -9,7 +9,7 @@ public class ChessCipherData {
     private String tmpData; // isinya concat blok2 data yang sedang dienkripsi/dekripsi
     
     public int numBlock;
-    private ChessBoard blocks[];    // chess board = data block
+    public ChessBoard blocks[];    // chess board = data block
     
     public ChessCipherData(String data) {
         rawDataStr = data;

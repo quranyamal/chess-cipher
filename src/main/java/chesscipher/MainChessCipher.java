@@ -27,6 +27,8 @@ public class MainChessCipher {
 
         cipher.encrypt();
         String cipherText = cipher.getData().toString();
+
+        cipher.setKey("AABC");
         cipher.getData().getBlock(0).printBoard();
         cipher.getData().getBlock(0).printBytes();
 
