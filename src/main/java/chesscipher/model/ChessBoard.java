@@ -51,7 +51,7 @@ public class ChessBoard {
             val <<= 1;
         }
     }
-    
+
     @Override
     public String toString() {
         char[] chars = new char[8];

@@ -59,13 +59,16 @@ public class ChessLibTest {
             e.printStackTrace();
         }
         System.out.println(chessGame.getBoard());
-        chessGame.moveWithoutVerification(CCPieceType.BLACK_PAWN3, new Position('c',6));
+        chessGame.moveWithoutVerification(CCPieceType.BLACK_PAWN2, new Position('b',5));
         System.out.println(pos2String(chessGame.positionMap.get(CCPieceType.WHITE_PAWN2)));
         try {
             chessGame.move(CCPieceType.WHITE_PAWN2, 32);
         } catch (PromotionException e) {
             e.printStackTrace();
         }
+        System.out.println(chessGame.getBoard());
+        System.out.println((chessGame.positionMap.get(CCPieceType.WHITE_PAWN2)));
+        chessGame.moveWithoutVerification(CCPieceType.BLACK_KNIGHT1, new Position('a',6));
         System.out.println(chessGame.getBoard());
     }
 
@@ -76,9 +79,17 @@ public class ChessLibTest {
 
     @Test
     public void testRNG(){
-        ChessCipherKey cck = new ChessCipherKey("halohalo");
-        for(int i=0;i<10;i++){
-            System.out.println(cck.nextDest());
+        ChessCipherKey cck = new ChessCipherKey("halohal1");
+        ChessGame chessGame = new ChessGame(PieceColor.WHITE);
+        System.out.println(chessGame.getBoard());
+        for(int i=0;i<100;i++){
+            System.out.println(chessGame.getTurn());
+            try {
+                chessGame.moveWithoutVerification(cck.nextPiece(),cck.nextDest());
+            } catch (PromotionException e) {
+                e.printStackTrace();
+            }
+            System.out.println(chessGame.getBoard());
         }
     }
 

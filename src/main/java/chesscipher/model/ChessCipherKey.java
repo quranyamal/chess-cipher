@@ -15,7 +15,7 @@ public class ChessCipherKey {
     String key;
     int roundState;
     Random rng;
-    boolean isWhiteTurn = true;
+    boolean isWhiteTurn = false;
     
     public ChessCipherKey(String key_) {
         key = getAlignedKey(key_);
@@ -45,6 +45,7 @@ public class ChessCipherKey {
     }
 
     public CCPieceType nextPiece(){
+        isWhiteTurn = !isWhiteTurn;
         return CCPieceType.getCCPieceType((isWhiteTurn)? PieceColor.WHITE:PieceColor.BLACK,rng.nextInt(16));
     }
 
