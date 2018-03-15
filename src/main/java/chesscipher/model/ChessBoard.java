@@ -1,4 +1,4 @@
-package main.java.chesscipher.model;
+package chesscipher.model;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

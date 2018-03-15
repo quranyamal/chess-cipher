@@ -1,4 +1,4 @@
-package main.java.chesscipher.model;
+package chesscipher.model;
 
 import com.nullpointergames.boardgames.PieceColor;
 import com.nullpointergames.boardgames.chess.CCPieceType;

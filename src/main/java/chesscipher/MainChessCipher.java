@@ -1,7 +1,7 @@
-package main.java.chesscipher;
+package chesscipher;
 
-import main.java.chesscipher.model.ChessCipherData;
-import main.java.chesscipher.model.ChessCipherKey;
+import chesscipher.model.ChessCipherData;
+import chesscipher.model.ChessCipherKey;
 
 public class MainChessCipher {
 

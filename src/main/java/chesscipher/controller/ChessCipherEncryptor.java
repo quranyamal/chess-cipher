@@ -1,7 +1,7 @@
-package main.java.chesscipher.controller;
+package chesscipher.controller;
 
-import main.java.chesscipher.model.ChessCipherData;
-import main.java.chesscipher.model.ChessCipherKey;
+import chesscipher.model.ChessCipherData;
+import chesscipher.model.ChessCipherKey;
 
 public class ChessCipherEncryptor {
     

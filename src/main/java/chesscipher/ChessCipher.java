@@ -1,9 +1,9 @@
-package main.java.chesscipher;
+package chesscipher;
 
-import main.java.chesscipher.controller.ChessCipherDecryptor;
-import main.java.chesscipher.controller.ChessCipherEncryptor;
-import main.java.chesscipher.model.ChessCipherData;
-import main.java.chesscipher.model.ChessCipherKey;
+import chesscipher.controller.ChessCipherDecryptor;
+import chesscipher.controller.ChessCipherEncryptor;
+import chesscipher.model.ChessCipherData;
+import chesscipher.model.ChessCipherKey;
 
 public class ChessCipher {
     private ChessCipherData data;

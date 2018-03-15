@@ -1,4 +1,4 @@
-package main.java.chesscipher.model;
+package chesscipher.model;
 
 class ChessGlobBar{
     public static int[] knightBox = {34, 47, 22, 11, 36, 49, 24 ,01,

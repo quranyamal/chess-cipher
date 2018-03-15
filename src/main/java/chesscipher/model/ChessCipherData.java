@@ -1,6 +1,6 @@
-package main.java.chesscipher.model;
+package chesscipher.model;
 
-import main.java.chesscipher.model.ChessBoard;
+import chesscipher.model.ChessBoard;
 
 public class ChessCipherData {
     public static final int BOARD_SIZE = 8;
