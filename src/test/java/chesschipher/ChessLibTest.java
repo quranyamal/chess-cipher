@@ -1,5 +1,6 @@
 package chesschipher;
 
+import chesscipher.ChessCipher;
 import chesscipher.model.CCBoard;
 import chesscipher.model.ChessCipherKey;
 import com.nullpointergames.boardgames.Board;
@@ -79,17 +80,22 @@ public class ChessLibTest {
 
     @Test
     public void testRNG(){
-        ChessCipherKey cck = new ChessCipherKey("halohal1");
-        ChessGame chessGame = new ChessGame(PieceColor.WHITE);
+        ChessCipher cipher = new ChessCipher();
+        String plainText = "COBA DATANYA STRING DULU!!";
+        cipher.setData(plainText);
+        cipher.setKey("AABC");
+        cipher.getData().blocks[0].printBoard();
+        ChessGame chessGame = new ChessGame(PieceColor.BLACK);
         System.out.println(chessGame.getBoard());
         for(int i=0;i<100;i++){
             System.out.println(chessGame.getTurn());
             try {
-                chessGame.moveWithoutVerification(cck.nextPiece(),cck.nextDest());
+                chessGame.moveWithoutVerification(cipher.getKey().nextPiece(),cipher.getKey().nextDest(),cipher.getData().blocks[0]);
             } catch (PromotionException e) {
                 e.printStackTrace();
             }
             System.out.println(chessGame.getBoard());
+            cipher.getData().blocks[0].printBoard();
         }
     }
 
