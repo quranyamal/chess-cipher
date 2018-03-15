@@ -3,9 +3,13 @@ package chesscipher.controller;
 import chesscipher.model.ChessBoard;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
+import chesscipher.model.ChessGlobVar;
+
+import java.util.Arrays;
 
 public class ChessCipherEncryptor {
-    
+    static int SIZE = ChessBoard.SIZE;
+
     public static void encrypt(ChessCipherData data, ChessCipherKey key) {
         key.resetRoundState();
 
@@ -14,18 +18,43 @@ public class ChessCipherEncryptor {
         }
     }
 
-
     public static void encryptBlock(ChessBoard block, String subKey) {
-        shiftBlockRight(block, subKey);
+        shiftRight(block, subKey);
+        applySBox(block);
         // todo
     }
 
-    public static void shiftBlockRight(ChessBoard block, String subKey) {
+    public static void shiftRight(ChessBoard block, String subKey) {
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
             byt++;
-            block.setMatrixRow(i, byt);
+            block.setByte(i, byt);
         }
     }
+
+    public static void applyKnightTourSubstitution(ChessBoard block) {
+        System.out.println("Apply knight tour");
+        boolean[][] matrix = new boolean[SIZE][SIZE];
+        for (int row=0; row<SIZE; row++) {
+            for (int col=0; col<SIZE; col++) {
+                int subtPos = Arrays.asList(ChessGlobVar.knightBox).indexOf((row*SIZE)+col+1);
+                boolean b = block.getBoolAt(row, col);
+                block.setBoolAt(subtPos/8, subtPos%8, b);
+                System.out.println("subtPos="+subtPos+" fill ["+subtPos/8+","+subtPos%8+"] with value from ["+row+","+col+"]");
+            }
+        }
+    }
+
+    public static void applySBox(ChessBoard block) {
+        System.out.println("Apply SBox");
+        for (int idx=0; idx<SIZE; idx++) {
+            byte plain = block.getByte(idx);
+            Integer subtVal = ChessGlobVar.sBox[(int)plain];
+            block.setByte(idx, subtVal.byteValue());
+            System.out.println("replace "+plain+" with "+subtVal);
+        }
+    }
+
+
     
 }

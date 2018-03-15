@@ -1,15 +1,14 @@
 package chesscipher.model;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
 public class ChessBoard {
     public static final int SIZE = 8;
     private boolean[][] matrix;
-    
-    /* precondition: str length==SIZE */
+
+    public ChessBoard(boolean[][] mtr) {
+        matrix = mtr;
+    }
+
     public ChessBoard(String str) {
-        if (str.length()!=SIZE) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
         matrix = new boolean[SIZE][SIZE];
         setMatrix(str);
     }
@@ -19,18 +18,20 @@ public class ChessBoard {
         StringBuilder binary = new StringBuilder();
 
         for (int row=0; row<SIZE; row++) {
-           //int val = bytes[row];
-           setMatrixRow(row, bytes[row]);
-//           for (int col = 0; col < 8; col++) {
-//            matrix[row][col] = (val & 128) != 0;
-//            binary.append((val & 128) == 0 ? 0 : 1);
-//            val <<= 1;
-//           }
+           setByte(row, bytes[row]);
            binary.append(' ');
         }
         System.out.println("'" + str + "' to binary: " + binary);
     }
-    
+
+    public boolean getBoolAt(int row, int col) {
+        return matrix[row][col];
+    }
+
+    public void setBoolAt(int row, int col, boolean b) {
+        matrix[row][col] = b;
+    }
+
     byte encodeBools(boolean[] bools){
       byte val = 0;
       for (boolean b: bools) {
@@ -44,7 +45,7 @@ public class ChessBoard {
         return encodeBools(matrix[idx]);
     }
 
-    public void setMatrixRow(int idx, byte bytes) {
+    public void setByte(int idx, byte bytes) {
         int val = bytes;
         for (int col = 0; col < 8; col++) {
             matrix[idx][col] = (val & 128) != 0;
@@ -65,9 +66,16 @@ public class ChessBoard {
         System.out.println("Board:");
         for (int i=0; i<8; i++) {
             for (int j=0; j<8; j++) {
-                System.out.print(matrix[i][j] + " ");
+                System.out.print(matrix[i][j]?1 + " " : 0 + " ");
             }
             System.out.println();
+        }
+    }
+
+    public void printBytes() {
+        System.out.println("Bytes: ");
+        for (int i=0; i<SIZE; i++) {
+            System.out.println(getByte(i) + " ");
         }
     }
     
