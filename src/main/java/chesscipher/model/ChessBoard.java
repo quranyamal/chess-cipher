@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 public class ChessBoard {
-    private static final int SIZE = 8;
+    public static final int SIZE = 8;
     public boolean[][] matrix; // !=0 -> true, 0->false
     
     /* precondition: str length==SIZE */
@@ -19,13 +19,13 @@ public class ChessBoard {
         StringBuilder binary = new StringBuilder();
 
         for (int row=0; row<SIZE; row++) {
-           int val = bytes[row];
-           for (int col = 0; col < 8; col++)
-           {
-            matrix[row][col] = (val & 128) != 0;
-            binary.append((val & 128) == 0 ? 0 : 1);
-            val <<= 1;
-           }
+           //int val = bytes[row];
+           setMatrixRow(row, bytes[row]);
+//           for (int col = 0; col < 8; col++) {
+//            matrix[row][col] = (val & 128) != 0;
+//            binary.append((val & 128) == 0 ? 0 : 1);
+//            val <<= 1;
+//           }
            binary.append(' ');
         }
         System.out.println("'" + str + "' to binary: " + binary);
@@ -39,7 +39,19 @@ public class ChessBoard {
       }
       return val;
     }
-    
+
+    public byte getByte(int idx) {
+        return encodeBools(matrix[idx]);
+    }
+
+    public void setMatrixRow(int idx, byte bytes) {
+        int val = bytes;
+        for (int col = 0; col < 8; col++) {
+            matrix[idx][col] = (val & 128) != 0;
+            val <<= 1;
+        }
+    }
+
     @Override
     public String toString() {
         char[] chars = new char[8];

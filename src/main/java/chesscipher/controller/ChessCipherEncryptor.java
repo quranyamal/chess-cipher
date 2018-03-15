@@ -1,5 +1,6 @@
 package chesscipher.controller;
 
+import chesscipher.model.ChessBoard;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
 
@@ -7,19 +8,24 @@ public class ChessCipherEncryptor {
     
     public static void encrypt(ChessCipherData data, ChessCipherKey key) {
         key.resetRoundState();
-        
-        // todo. contoh:
-        shiftBytesRight(data, key);
-        // (seharusnya per block)
-    }
-    
-    public static void shiftBytesRight(ChessCipherData data, ChessCipherKey key) {
-        char dataChars[] = data.getDataStr().toCharArray();
-        for (int i=0; i<dataChars.length; i++) {
-            int numShift = (int) key.getSubKey().toCharArray()[0] - 64;
-            dataChars[i] = (char) ((int)dataChars[i] + numShift);
+
+        for (int i=0; i<data.numBlock; i++) {
+            encryptBlock(data.getBlock(i), key.getSubKey());
         }
-        data.setDataStr(String.valueOf(dataChars));
+    }
+
+
+    public static void encryptBlock(ChessBoard block, String subKey) {
+        shiftBlockRight(block, subKey);
+        // todo
+    }
+
+    public static void shiftBlockRight(ChessBoard block, String subKey) {
+        for (int i=0; i<ChessBoard.SIZE; i++) {
+            byte byt = block.getByte(i);
+            byt++;
+            block.setMatrixRow(i, byt);
+        }
     }
     
 }

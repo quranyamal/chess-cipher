@@ -1,25 +1,31 @@
 package chesscipher.controller;
 
+import chesscipher.model.ChessBoard;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
 
 public class ChessCipherDecryptor {
 
     public static void decrypt(ChessCipherData data, ChessCipherKey key) {
-        key.resetRoundState();        
-        
-        // todo. contoh:
-        shiftBytesLeft(data, key);
-        // (seharusnya per block)
-    }
- 
-    public static void shiftBytesLeft(ChessCipherData data, ChessCipherKey key) {
-        char dataChars[] = data.getDataStr().toCharArray();
-        for (int i=0; i<dataChars.length; i++) {
-            int numShift = (int) key.getSubKey().toCharArray()[0] - 64;
-            dataChars[i] = (char) ((int)dataChars[i] - numShift);
+        key.resetRoundState();
+
+        for (int i=0; i<data.numBlock; i++) {
+            decryptBlock(data.getBlock(i), key.getSubKey());
         }
-        data.setDataStr(String.valueOf(dataChars));
+
+    }
+
+    public static void decryptBlock(ChessBoard block, String subKey) {
+        shiftBlockLeft(block, subKey);
+        // todo
+    }
+
+    public static void shiftBlockLeft(ChessBoard block, String subKey) {
+        for (int i=0; i<ChessBoard.SIZE; i++) {
+            byte byt = block.getByte(i);
+            byt--;
+            block.setMatrixRow(i, byt);
+        }
     }
     
 }

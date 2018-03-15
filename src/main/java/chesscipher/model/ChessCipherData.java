@@ -5,14 +5,14 @@ import chesscipher.model.ChessBoard;
 public class ChessCipherData {
     public static final int BOARD_SIZE = 8;
     public static final int BLOCK_SIZE = BOARD_SIZE*BOARD_SIZE;
-    private String dataStr;
+    private String rawDataStr;
     private String tmpData; // isinya concat blok2 data yang sedang dienkripsi/dekripsi
     
     public int numBlock;
     public ChessBoard blocks[];    // chess board = data block
     
     public ChessCipherData(String data) {
-        dataStr = data;
+        rawDataStr = data;
         numBlock = (data.length()/8) + (data.length()%8==0 ? 0 : 1);
         blocks = new ChessBoard[numBlock];
         tmpData = "";
@@ -21,7 +21,7 @@ public class ChessCipherData {
     
     private void initBlocks() {
         for (int i=0; i<numBlock-1; i++) {
-            String subStr = dataStr.substring(i*8, (i+1)*8);
+            String subStr = rawDataStr.substring(i*8, (i+1)*8);
             System.out.println("substring:" + subStr);
             blocks[i] = new ChessBoard(subStr);
             
@@ -32,7 +32,7 @@ public class ChessCipherData {
     }
     
     private void initLastBlock() {
-        String subStr = dataStr.substring((numBlock-1)*BOARD_SIZE);
+        String subStr = rawDataStr.substring((numBlock-1)*BOARD_SIZE);
         
         if (subStr.length()==8) {
             System.out.println("LAST BLOCK IS NOT PADDED");
@@ -47,11 +47,11 @@ public class ChessCipherData {
     }
     
     public String getDataStr() {
-        return dataStr;
+        return rawDataStr;
     }
     
     public void setDataStr(String str) {
-        dataStr = str;
+        rawDataStr = str;
     }
     
     public ChessBoard getBlock(int i) {
@@ -60,7 +60,11 @@ public class ChessCipherData {
     
     @Override
     public String toString() {
-        return getDataStr();
+        String strFromBlock = "";
+        for (int i=0; i<numBlock; i++) {
+            strFromBlock += blocks[i].toString();
+        }
+        return strFromBlock;
     }
     
     public String getTmpData() {

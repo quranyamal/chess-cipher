@@ -113,3 +113,8 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+
+# gradle files
+gradle/
+gradlew
+gradlew.bat
