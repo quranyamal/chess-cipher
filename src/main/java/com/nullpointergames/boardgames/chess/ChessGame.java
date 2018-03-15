@@ -18,18 +18,17 @@ import static com.nullpointergames.boardgames.utils.MessageUtils.YOU_WON;
 import static com.nullpointergames.boardgames.utils.MessageUtils.getMessage;
 import static java.lang.String.format;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.nullpointergames.boardgames.Block;
-import com.nullpointergames.boardgames.Board;
-import com.nullpointergames.boardgames.Piece;
-import com.nullpointergames.boardgames.PieceColor;
-import com.nullpointergames.boardgames.Position;
+import com.nullpointergames.boardgames.*;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
 import com.nullpointergames.boardgames.chess.rules.PawnRule;
 
 
 public class ChessGame {
+	public final Map<CCPieceType,Position> positionMap = new HashMap<>(32);
 
 	private final Board board;
 	private final PieceColor myColor;
@@ -50,7 +49,34 @@ public class ChessGame {
 	public Board getBoard() {
 		return board;
 	}
-	
+
+	public void move(CCPieceType pieceType, int dest) throws PromotionException {
+		final Position from = positionMap.get(pieceType);
+		final Position to = new Position(dest);
+		Rule rule = RuleFactory.getRule(board,from);
+		List<Position> possibleMoves = rule.possibleMoves();
+		if(possibleMoves.isEmpty())
+			return;
+
+		Position minPos = possibleMoves.get(0);
+		double minDist = to.getDistance(minPos);
+		for(int i=1;i<possibleMoves.size();i++){
+			double dist = to.getDistance(possibleMoves.get(i));
+			if(dist<minDist){
+				minDist = dist;
+				minPos = possibleMoves.get(i);
+			}
+		}
+
+		move(from,minPos);
+	}
+
+	public void move(CCPieceType pieceType, final Position to) throws PromotionException {
+		final Position from = positionMap.get(pieceType);
+		move(from,to);
+		positionMap.get(pieceType).set(to.col(),to.row());
+	}
+
 	public void move(final Position from, final Position to) throws PromotionException {
 		if(isOver) {
 			String result = winner == myColor ? getMessage(YOU_WON) : getMessage(YOU_LOST);
@@ -65,6 +91,11 @@ public class ChessGame {
 		
 		move(board, from, to);
 		nextTurn();
+	}
+
+	public void moveWithoutVerification(CCPieceType pieceType, final Position to){
+		final Position from = positionMap.get(pieceType);
+		moveWithoutVerification(from,to);
 	}
 	
 	public void moveWithoutVerification(final Position from, final Position to) {
@@ -149,38 +180,73 @@ public class ChessGame {
 	}
 	
 	private void putPieces() {
+		positionMap.put(CCPieceType.WHITE_ROOK1, new Position('a',1));
 		putPiece(ROOK, WHITE, 'a', 1);
+		positionMap.put(CCPieceType.WHITE_KNIGHT1, new Position('b',1));
 		putPiece(KNIGHT, WHITE, 'b', 1);
+		positionMap.put(CCPieceType.WHITE_BISHOP1, new Position('c',1));
 		putPiece(BISHOP, WHITE, 'c', 1);
+		positionMap.put(CCPieceType.WHITE_QUEEN, new Position('d',1));
 		putPiece(QUEEN, WHITE, 'd', 1);
+		positionMap.put(CCPieceType.WHITE_KING, new Position('e',1));
 		putPiece(KING, WHITE, 'e', 1);
+		positionMap.put(CCPieceType.WHITE_BISHOP2, new Position('f',1));
 		putPiece(BISHOP, WHITE, 'f', 1);
+		positionMap.put(CCPieceType.WHITE_KNIGHT2, new Position('g',1));
 		putPiece(KNIGHT, WHITE, 'g', 1);
+		positionMap.put(CCPieceType.WHITE_ROOK2, new Position('h',1));
 		putPiece(ROOK, WHITE, 'h', 1);
+
+		positionMap.put(CCPieceType.WHITE_PAWN1, new Position('a',2));
 		putPiece(PAWN, WHITE, 'a', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN2, new Position('b',2));
 		putPiece(PAWN, WHITE, 'b', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN3, new Position('c',2));
 		putPiece(PAWN, WHITE, 'c', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN4, new Position('d',2));
 		putPiece(PAWN, WHITE, 'd', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN5, new Position('e',2));
 		putPiece(PAWN, WHITE, 'e', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN6, new Position('f',2));
 		putPiece(PAWN, WHITE, 'f', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN7, new Position('g',2));
 		putPiece(PAWN, WHITE, 'g', 2);
+		positionMap.put(CCPieceType.WHITE_PAWN8, new Position('h',2));
 		putPiece(PAWN, WHITE, 'h', 2);
 
+
+		positionMap.put(CCPieceType.BLACK_ROOK1, new Position('a',8));
 		putPiece(ROOK, BLACK, 'a', 8);
+		positionMap.put(CCPieceType.BLACK_KNIGHT1, new Position('b',8));
 		putPiece(KNIGHT, BLACK, 'b', 8);
+		positionMap.put(CCPieceType.BLACK_BISHOP1, new Position('c',8));
 		putPiece(BISHOP, BLACK, 'c', 8);
+		positionMap.put(CCPieceType.BLACK_QUEEN, new Position('d',8));
 		putPiece(QUEEN, BLACK, 'd', 8);
+		positionMap.put(CCPieceType.BLACK_KING, new Position('e',8));
 		putPiece(KING, BLACK, 'e', 8);
+		positionMap.put(CCPieceType.BLACK_BISHOP2, new Position('f',8));
 		putPiece(BISHOP, BLACK, 'f', 8);
+		positionMap.put(CCPieceType.BLACK_KNIGHT2, new Position('g',8));
 		putPiece(KNIGHT, BLACK, 'g', 8);
+		positionMap.put(CCPieceType.BLACK_ROOK2, new Position('h',8));
 		putPiece(ROOK, BLACK, 'h', 8);
+
+		positionMap.put(CCPieceType.BLACK_PAWN1, new Position('a',7));
 		putPiece(PAWN, BLACK, 'a', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN2, new Position('b',7));
 		putPiece(PAWN, BLACK, 'b', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN3, new Position('c',7));
 		putPiece(PAWN, BLACK, 'c', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN4, new Position('d',7));
 		putPiece(PAWN, BLACK, 'd', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN5, new Position('e',7));
 		putPiece(PAWN, BLACK, 'e', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN6, new Position('f',7));
 		putPiece(PAWN, BLACK, 'f', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN7, new Position('g',7));
 		putPiece(PAWN, BLACK, 'g', 7);
+		positionMap.put(CCPieceType.BLACK_PAWN8, new Position('h',7));
 		putPiece(PAWN, BLACK, 'h', 7);
 	}
 }
