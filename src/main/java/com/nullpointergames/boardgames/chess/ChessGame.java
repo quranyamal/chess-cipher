@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import chesscipher.controller.util.SwapEntry;
 import chesscipher.model.ChessBoard;
 import com.nullpointergames.boardgames.*;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
@@ -94,6 +95,12 @@ public class ChessGame {
 		
 		move(board, from, to);
 		nextTurn();
+	}
+
+	public SwapEntry getSwapEntry(CCPieceType pieceType, int dest, ChessBoard board) throws PromotionException {
+		Position validDest = moveWithoutVerification(pieceType,dest);
+		final Position from = positionMap.get(pieceType);
+		return new SwapEntry(from,validDest);
 	}
 
 	public void moveWithoutVerification(CCPieceType pieceType, int dest, ChessBoard board) throws PromotionException {
