@@ -4,9 +4,6 @@ public class ChessBoard {
     public static final int SIZE = 8;
     public boolean[][] matrix; // !=0 -> true, 0->false
 
-    /* precondition: str length==SIZE */
-    private boolean[][] matrix;
-
     public ChessBoard(boolean[][] mtr) {
         matrix = mtr;
     }
@@ -78,10 +75,10 @@ public class ChessBoard {
     }
 
     public void printBytes() {
-        System.out.println("Bytes: ");
         for (int i=0; i<SIZE; i++) {
-            System.out.println(getByte(i) + " ");
+            System.out.print((getByte(i) & 0xff)+ " ");
         }
+        System.out.println();
     }
 
     public static void main(String args[]) {

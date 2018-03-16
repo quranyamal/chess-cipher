@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ChessCipherDecryptor extends ChessCipherBase{
     static List<SwapEntry> swapEntries = new ArrayList<>();
-public class ChessCipherDecryptor {
     static int SIZE = ChessBoard.SIZE;
 
     public static void decrypt(ChessCipherData data, ChessCipherKey key) {
@@ -32,9 +31,10 @@ public class ChessCipherDecryptor {
     public static void decryptBlock(ChessBoard block, ChessCipherKey key) {
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
-//        shiftBlockLeft(block, subKey);
 
-        chessPermutation(block,key);
+        revertSBox(block);
+        shiftLeft(block, subKey);
+        //chessPermutation(block,key);
         // todo
     }
 
@@ -62,6 +62,8 @@ public class ChessCipherDecryptor {
 
     private static void revertSBox(ChessBoard block) {
         System.out.println("Revert SBox");
+        System.out.print("bytes before: ");
+        block.printBytes();
         for (int idx=0; idx<SIZE; idx++) {
             byte cipher = block.getByte(idx);
             //cipher++; // it is a must, dont know why
@@ -69,6 +71,8 @@ public class ChessCipherDecryptor {
             block.setByte(idx, subtVal.byteValue());
             System.out.println("replace "+(cipher & 0xff)+" with "+subtVal);
         }
+        System.out.print("bytes after: ");
+        block.printBytes();
     }
 
     private static void chessPermutation(ChessBoard block, ChessCipherKey key){

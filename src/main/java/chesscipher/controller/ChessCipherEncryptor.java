@@ -11,6 +11,7 @@ import chesscipher.model.ChessGlobVar;
 import java.util.Arrays;
 
 public class ChessCipherEncryptor extends ChessCipherBase{
+    private static int SIZE = ChessBoard.SIZE;
 
     public static void encrypt(ChessCipherData data, ChessCipherKey key) {
         key.resetRoundState();
@@ -24,9 +25,10 @@ public class ChessCipherEncryptor extends ChessCipherBase{
     public static void encryptBlock(ChessBoard block, ChessCipherKey key) {
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
-//        shiftBlockRight(block, subKey);
 
-        chessPermutation(block,key);
+        //chessPermutation(block,key);
+        shiftRight(block, subKey);
+        applySBox(block);
         // todo
     }
 
@@ -53,12 +55,16 @@ public class ChessCipherEncryptor extends ChessCipherBase{
 
     public static void applySBox(ChessBoard block) {
         System.out.println("Apply SBox");
+        System.out.print("bytes before: ");
+        block.printBytes();
         for (int idx=0; idx<SIZE; idx++) {
             byte plain = block.getByte(idx);
             Integer subtVal = ChessGlobVar.sBox[(int)plain];
             block.setByte(idx, subtVal.byteValue());
             System.out.println("replace "+plain+" with "+subtVal);
         }
+        System.out.print("bytes after: ");
+        block.printBytes();
     }
 
 
