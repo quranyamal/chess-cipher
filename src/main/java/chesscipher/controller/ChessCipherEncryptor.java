@@ -1,5 +1,6 @@
 package chesscipher.controller;
 
+import chesscipher.ChessCipher;
 import chesscipher.model.ChessBoard;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
@@ -7,13 +8,21 @@ import com.nullpointergames.boardgames.PieceColor;
 import com.nullpointergames.boardgames.chess.ChessGame;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
 
+import java.util.List;
+
 public class ChessCipherEncryptor extends ChessCipherBase{
 
     public static void encrypt(ChessCipherData data, ChessCipherKey key) {
         key.resetRoundState();
 
-        for (int i=0; i<data.numBlock; i++) {
-            encryptBlock(data.getBlock(i), key);
+        encryptBlock(data.getBlock(0),key);
+        seedRandBlock(data.getBlock(0));
+        encryptedList.add(data.getBlock(0));
+
+        for (int i=1; i<data.numBlock; i++) {
+            encryptBlock(data.getBlock(i),key);
+//            encryptWithDiffusion(encryptedList,data.getBlock(i));
+            encryptedList.add(data.getBlock(i));
         }
     }
 
@@ -25,6 +34,15 @@ public class ChessCipherEncryptor extends ChessCipherBase{
 
         chessPermutation(block,key);
         // todo
+    }
+
+    public static void encryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard currBlock){
+        for(ChessBoard board: encrypted){
+            board.printBoard();
+        }
+        ChessCipherKey newKey = getRandKey(encrypted);
+        System.out.println(newKey);
+        encryptBlock(currBlock,newKey);
     }
 
     public static void shiftBlockRight(ChessBoard block, String subKey) {

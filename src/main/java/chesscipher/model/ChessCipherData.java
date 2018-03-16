@@ -2,6 +2,8 @@ package chesscipher.model;
 
 import chesscipher.model.ChessBoard;
 
+import java.util.Arrays;
+
 public class ChessCipherData {
     public static final int BOARD_SIZE = 8;
     public static final int BLOCK_SIZE = BOARD_SIZE*BOARD_SIZE;
@@ -66,7 +68,19 @@ public class ChessCipherData {
         }
         return strFromBlock;
     }
-    
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        ChessCipherData clone = new ChessCipherData(this.toString());
+        for(int i=0;i<clone.blocks.length;i++){
+            ChessBoard block = clone.blocks[i];
+            for(int row=0;row<block.matrix.length;row++){
+                System.arraycopy(this.blocks[i].matrix[row], 0, block.matrix[row], 0, block.matrix[row].length);
+            }
+        }
+        return clone;
+    }
+
     public String getTmpData() {
         return tmpData;
     }

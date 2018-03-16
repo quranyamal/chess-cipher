@@ -9,6 +9,7 @@ import com.nullpointergames.boardgames.chess.ChessGame;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChessCipherDecryptor extends ChessCipherBase{
@@ -18,10 +19,21 @@ public class ChessCipherDecryptor extends ChessCipherBase{
         System.out.println("=======");
         key.resetRoundState();
 
-        for (int i=0; i<data.numBlock; i++) {
-            decryptBlock(data.getBlock(i), key);
+        ChessCipherData cloneData = null;
+        try {
+            cloneData = (ChessCipherData) data.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
+        List<ChessBoard> cloneList = Arrays.asList(cloneData.blocks);
+        seedRandBlock(cloneList.get(0));
 
+        decryptBlock(data.getBlock(0),key);
+
+        for (int i=1; i<data.numBlock; i++) {
+            decryptBlock(data.getBlock(i),key);
+//            decryptWithDiffusion(cloneList.subList(0,i),data.getBlock(i));
+        }
     }
 
     public static void decryptBlock(ChessBoard block, ChessCipherKey key) {
@@ -31,6 +43,15 @@ public class ChessCipherDecryptor extends ChessCipherBase{
 
         chessPermutation(block,key);
         // todo
+    }
+
+    public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard currBlock){
+        for(ChessBoard board: encrypted){
+            board.printBoard();
+        }
+        ChessCipherKey newKey = getRandKey(encrypted);
+        System.out.println(newKey);
+        decryptBlock(currBlock,newKey);
     }
 
     public static void shiftBlockLeft(ChessBoard block, String subKey) {

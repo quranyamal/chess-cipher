@@ -56,5 +56,10 @@ public class ChessCipherKey {
     public void resetRoundState() {
         roundState=0;
     }
-    
+
+
+    @Override
+    public String toString() {
+        return key;
+    }
 }

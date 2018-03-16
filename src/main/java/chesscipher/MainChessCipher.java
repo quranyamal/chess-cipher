@@ -3,6 +3,10 @@ package chesscipher;
 import chesscipher.model.ChessCipherData;
 import chesscipher.model.ChessCipherKey;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class MainChessCipher {
 
     /**
@@ -17,14 +21,31 @@ public class MainChessCipher {
 
     static void encryptDecryptTest1() {
         ChessCipher cipher = new ChessCipher();
-        String plainText = "COBA DATANYA STRING DULU!!";
+        String plainText = "I like him not, nor stands it safe with us To let his madness range. Therefore prepare you; I your commission will forthwith dispatch, And he to England shall along with you: The terms of our estate: i.e., my position as king. ...more  The terms of our estate may not endure Hazard so near's as doth hourly grow / Out of his brows: i.e., dangers that threaten me so nearly, which grow every hour from his (mad) moods. ...more   Hazard so near's as doth hourly grow Out of his brows. ";
         cipher.setData(plainText);
-        cipher.setKey("AABC");
+        cipher.setKey("KURAKURA");
         
         cipher.encrypt();
         String cipherText = cipher.getData().toString();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("E:\\kuliah\\if42\\kriptografi\\tts\\cipher.txt"))) {
 
-        cipher.setKey("AABC");
+            String content = cipherText;
+
+            bw.write(content);
+
+            // no need to close it.
+            //bw.close();
+
+            System.out.println("Done");
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+        cipher.setKey("KURAKURA");
+//        cipher.getData().blocks[0].matrix[1][3] = !cipher.getData().blocks[0].matrix[1][3];
         cipher.decrypt();
         String decryptedText = cipher.getData().toString();
         

@@ -60,7 +60,12 @@ public class ChessBoard {
         }
         return String.valueOf(chars);
     }
-    
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
     public void printBoard() {
         System.out.println("Board:");
         for (int i=0; i<8; i++) {
