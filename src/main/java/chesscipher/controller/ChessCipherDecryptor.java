@@ -35,8 +35,8 @@ public class ChessCipherDecryptor extends ChessCipherBase{
         decryptBlock(data.getBlock(0),key);
 
         for (int i=1; i<data.numBlock; i++) {
-            decryptBlock(data.getBlock(i),key);
-//            decryptWithDiffusion(cloneList.subList(0,i),data.getBlock(i));
+//            decryptBlock(data.getBlock(i),key);
+            decryptWithDiffusion(cloneList.subList(0,i),data.getBlock(i));
         }
 
     }

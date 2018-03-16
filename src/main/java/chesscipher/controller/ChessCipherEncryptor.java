@@ -24,8 +24,8 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         encryptedList.add(data.getBlock(0));
 
         for (int i=1; i<data.numBlock; i++) {
-            encryptBlock(data.getBlock(i),key);
-//            encryptWithDiffusion(encryptedList,data.getBlock(i));
+//            encryptBlock(data.getBlock(i),key);
+            encryptWithDiffusion(encryptedList,data.getBlock(i));
             encryptedList.add(data.getBlock(i));
         }
     }
