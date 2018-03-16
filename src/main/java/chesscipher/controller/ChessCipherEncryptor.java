@@ -26,7 +26,7 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
 
-        //chessPermutation(block,key);
+        chessPermutation(block,key);
         shiftRight(block, subKey);
         applySBox(block);
         // todo
@@ -59,7 +59,7 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         block.printBytes();
         for (int idx=0; idx<SIZE; idx++) {
             byte plain = block.getByte(idx);
-            Integer subtVal = ChessGlobVar.sBox[(int)plain];
+            Integer subtVal = ChessGlobVar.sBox[plain & 0xff];
             block.setByte(idx, subtVal.byteValue());
             System.out.println("replace "+plain+" with "+subtVal);
         }
