@@ -7,6 +7,9 @@ import chesscipher.model.ChessCipherKey;
 import com.nullpointergames.boardgames.PieceColor;
 import com.nullpointergames.boardgames.chess.ChessGame;
 import com.nullpointergames.boardgames.chess.exceptions.PromotionException;
+import chesscipher.model.ChessGlobVar;
+
+import java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +17,7 @@ import java.util.List;
 
 public class ChessCipherDecryptor extends ChessCipherBase{
     static List<SwapEntry> swapEntries = new ArrayList<>();
+    static int SIZE = ChessBoard.SIZE;
 
     public static void decrypt(ChessCipherData data, ChessCipherKey key) {
         System.out.println("=======");
@@ -34,6 +38,7 @@ public class ChessCipherDecryptor extends ChessCipherBase{
             decryptBlock(data.getBlock(i),key);
 //            decryptWithDiffusion(cloneList.subList(0,i),data.getBlock(i));
         }
+
     }
 
     public static void decryptBlock(ChessBoard block, ChessCipherKey key) {
@@ -41,11 +46,13 @@ public class ChessCipherDecryptor extends ChessCipherBase{
         String subKey = key.getSubKey();
 //        shiftBlockLeft(block, subKey);
 
+        revertSBox(block);
+        shiftLeft(block, subKey);
         chessPermutation(block,key);
         // todo
     }
 
-    public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard currBlock){
+public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard currBlock){
         for(ChessBoard board: encrypted){
             board.printBoard();
         }
@@ -54,12 +61,40 @@ public class ChessCipherDecryptor extends ChessCipherBase{
         decryptBlock(currBlock,newKey);
     }
 
-    public static void shiftBlockLeft(ChessBoard block, String subKey) {
+    public static void shiftLeft(ChessBoard block, String subKey) {
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
             byt--;
-            block.setMatrixRow(i, byt);
+            block.setByte(i, byt);
         }
+    }
+
+    public static void revertKnightTourSubstitution(ChessBoard block) {
+        System.out.println("revertKnightTourSubstitution");
+        boolean[][] matrix = new boolean[SIZE][SIZE];
+        for (int row=0; row<SIZE; row++) {
+            for (int col=0; col<SIZE; col++) {
+                int subtPos = Arrays.asList(ChessGlobVar.knightBox).indexOf((row*SIZE)+col+1);
+                boolean b = block.getBoolAt(subtPos/8, subtPos%8);
+                block.setBoolAt(row, col, b);
+                System.out.println("subtPos="+subtPos+" fill ["+row+","+col+"] with value from ["+subtPos/8+","+subtPos%8+"]");
+            }
+        }
+    }
+
+    private static void revertSBox(ChessBoard block) {
+        System.out.println("Revert SBox");
+        System.out.print("bytes before: ");
+        block.printBytes();
+        for (int idx=0; idx<SIZE; idx++) {
+            byte cipher = block.getByte(idx);
+            //cipher++; // it is a must, dont know why
+            Integer subtVal = Arrays.asList(ChessGlobVar.sBox).indexOf(cipher & 0xff);
+            block.setByte(idx, subtVal.byteValue());
+            System.out.println("replace "+(cipher & 0xff)+" with "+subtVal);
+        }
+        System.out.print("bytes after: ");
+        block.printBytes();
     }
 
     private static void chessPermutation(ChessBoard block, ChessCipherKey key){

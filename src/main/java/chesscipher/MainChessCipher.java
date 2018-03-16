@@ -46,6 +46,8 @@ public class MainChessCipher {
 
         cipher.setKey("KURAKURA");
 //        cipher.getData().blocks[0].matrix[1][3] = !cipher.getData().blocks[0].matrix[1][3];
+        cipher.getData().getBlock(0).printBoard();
+        cipher.getData().getBlock(0).printBytes();
         cipher.decrypt();
         String decryptedText = cipher.getData().toString();
         
