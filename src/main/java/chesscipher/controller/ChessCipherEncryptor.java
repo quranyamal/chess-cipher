@@ -35,7 +35,7 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
 
-        chessPermutation(block,key);
+        //chessPermutation(block,key);
         shiftRight(block, subKey);
         applySBox(block);
         // todo

@@ -48,7 +48,7 @@ public class ChessCipherDecryptor extends ChessCipherBase{
 
         revertSBox(block);
         shiftLeft(block, subKey);
-        chessPermutation(block,key);
+        //chessPermutation(block,key);
         // todo
     }
 

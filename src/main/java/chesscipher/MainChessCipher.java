@@ -23,7 +23,7 @@ public class MainChessCipher {
         ChessCipher cipher = new ChessCipher();
         String plainText = "I like him not, nor stands it safe with us To let his madness range. Therefore prepare you; I your commission will forthwith dispatch, And he to England shall along with you: The terms of our estate: i.e., my position as king. ...more  The terms of our estate may not endure Hazard so near's as doth hourly grow / Out of his brows: i.e., dangers that threaten me so nearly, which grow every hour from his (mad) moods. ...more   Hazard so near's as doth hourly grow Out of his brows. ";
         cipher.setData(plainText);
-        cipher.setKey("KURAKURA");
+        cipher.setKey("GAJAH");
         
         cipher.encrypt();
         String cipherText = cipher.getData().toString();
