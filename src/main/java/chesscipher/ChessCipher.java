@@ -12,7 +12,11 @@ public class ChessCipher {
     public void setData(String dataStr) {
         data = new ChessCipherData(dataStr);
     }
-    
+
+    public void setData(byte[] bytes) {
+        data = new ChessCipherData(bytes);
+    }
+
     public void setKey(String keyStr) {
         key = new ChessCipherKey(keyStr);
     }

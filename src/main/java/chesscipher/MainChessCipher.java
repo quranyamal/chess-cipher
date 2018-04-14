@@ -14,14 +14,35 @@ public class MainChessCipher {
      */
     
     public static void main(String[] args) {
+
+        encryptDecryptTest2();
         
-        encryptDecryptTest1();
-        
+    }
+
+    static void encryptDecryptTest2() {
+        ChessCipher cipher = new ChessCipher();
+
+        String plainText = "ABCDEFGH";
+        cipher.setData(plainText);
+        cipher.setKey("GAJAH");
+        System.out.println("\nplain : " + plainText);
+
+        cipher.encrypt();
+        String cipherText = cipher.getData().toString();
+        System.out.println("\ncipher: " + cipherText);
+
+        cipher.setData(cipherText);
+
+        cipher.decrypt();
+        String reversedText = cipher.getData().toString();
+        System.out.println("\nrversd: " + reversedText);
+
     }
 
     static void encryptDecryptTest1() {
         ChessCipher cipher = new ChessCipher();
-        String plainText = "I like him not, nor stands it safe with us To let his madness range. Therefore prepare you; I your commission will forthwith dispatch, And he to England shall along with you: The terms of our estate: i.e., my position as king. ...more  The terms of our estate may not endure Hazard so near's as doth hourly grow / Out of his brows: i.e., dangers that threaten me so nearly, which grow every hour from his (mad) moods. ...more   Hazard so near's as doth hourly grow Out of his brows. ";
+        //String plainText = "I like him not, nor stands it safe with us To let his madness range. Therefore prepare you; I your commission will forthwith dispatch, And he to England shall along with you: The terms of our estate: i.e., my position as king. ...more  The terms of our estate may not endure Hazard so near's as doth hourly grow / Out of his brows: i.e., dangers that threaten me so nearly, which grow every hour from his (mad) moods. ...more   Hazard so near's as doth hourly grow Out of his brows. ";
+        String plainText = "12345678";
         cipher.setData(plainText);
         cipher.setKey("GAJAH");
         
@@ -48,6 +69,20 @@ public class MainChessCipher {
 //        cipher.getData().blocks[0].matrix[1][3] = !cipher.getData().blocks[0].matrix[1][3];
         cipher.getData().getBlock(0).printBoard();
         cipher.getData().getBlock(0).printBytes();
+
+
+        //cipher.setData(cipherText);
+
+        //coba ganti
+        byte[] bytesData = cipher.getData().getBytesData();
+
+        for (int i=0; i<bytesData.length; i++) {
+            System.out.println("bytes-"+i+": " + (int) bytesData[i]);
+        }
+
+        System.out.println("cipher data:" + bytesData.length + " bytes");
+        cipher.setData(bytesData);
+
         cipher.decrypt();
         String decryptedText = cipher.getData().toString();
         

@@ -19,7 +19,7 @@ public class ChessCipherDecryptor extends ChessCipherBase{
     static List<SwapEntry> swapEntries = new ArrayList<>();
     static int SIZE = ChessBoard.SIZE;
 
-    public static void decrypt(ChessCipherData data, ChessCipherKey key) {
+    public static void decryptOld(ChessCipherData data, ChessCipherKey key) {
         System.out.println("=======");
         key.resetRoundState();
 
@@ -38,15 +38,24 @@ public class ChessCipherDecryptor extends ChessCipherBase{
 //            decryptBlock(data.getBlock(i),key);
             decryptWithDiffusion(cloneList.subList(0,i),data.getBlock(i));
         }
+    }
 
+    public static void decrypt(ChessCipherData data, ChessCipherKey key) {
+        System.out.println("====decrypting===");
+        key.resetRoundState();
+
+        for (int i=0; i<data.numBlock; i++) {
+            decryptBlock(data.getBlock(i),key);
+        }
     }
 
     public static void decryptBlock(ChessBoard block, ChessCipherKey key) {
+        System.out.println("decrypting block");
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
 //        shiftBlockLeft(block, subKey);
 
-        revertSBox(block);
+        //revertSBox(block);
         shiftLeft(block, subKey);
         //chessPermutation(block,key);
         // todo

@@ -14,8 +14,18 @@ public class ChessBoard {
         setMatrix(str);
     }
 
+    public ChessBoard(byte[] bytes) {
+        if (bytes.length!=SIZE*2) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
+        matrix = new boolean[SIZE][SIZE];
+        for (int i=0; i<SIZE; i++) {
+            setByte(i, bytes[i]);
+        }
+    }
+
     private void setMatrix(String str) {
+        System.out.println("setting matrix");
         byte[] bytes = str.getBytes();
+        System.out.println("bytes size="+bytes.length);
         StringBuilder binary = new StringBuilder();
 
         for (int row=0; row<SIZE; row++) {

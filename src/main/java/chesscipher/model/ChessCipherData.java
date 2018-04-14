@@ -2,6 +2,7 @@ package chesscipher.model;
 
 import chesscipher.model.ChessBoard;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class ChessCipherData {
@@ -20,7 +21,37 @@ public class ChessCipherData {
         tmpData = "";
         initBlocks();
     }
-    
+
+    public ChessCipherData(byte[] bytes) {
+        numBlock = (bytes.length/8) + (bytes.length%8==0 ? 0 : 1);
+        blocks = new ChessBoard[numBlock];
+        initBlocksFromBytes(bytes);
+    }
+
+    private void initBlocksFromBytes(byte[] bytes) {
+        for (int i=0; i<numBlock; i++) {
+            byte[] sub8Bytes = Arrays.copyOfRange(bytes,i*BOARD_SIZE, (i+1)*BOARD_SIZE);
+            blocks[i] = new ChessBoard(sub8Bytes);
+
+        }
+        //initLastBlockFromBytes();
+    }
+
+    private void initLastBlockFromBytes() {
+        String subStr = rawDataStr.substring((numBlock-1)*BOARD_SIZE);
+
+        if (subStr.length()==8) {
+            System.out.println("LAST BLOCK IS NOT PADDED");
+        } else {
+            System.out.println("LAST BLOCK IS PADDED");
+            for (int i=subStr.length(); i<BOARD_SIZE; i++) {
+                subStr = subStr + (char)0;
+            }
+        }
+        blocks[numBlock-1] = new ChessBoard(subStr);
+        tmpData += blocks[numBlock-1];
+    }
+
     private void initBlocks() {
         for (int i=0; i<numBlock-1; i++) {
             String subStr = rawDataStr.substring(i*8, (i+1)*8);
@@ -55,11 +86,12 @@ public class ChessCipherData {
     public void setDataStr(String str) {
         rawDataStr = str;
     }
-    
+
+
     public ChessBoard getBlock(int i) {
         return blocks[i];
     }
-    
+
     @Override
     public String toString() {
         String strFromBlock = "";
@@ -67,6 +99,26 @@ public class ChessCipherData {
             strFromBlock += blocks[i].toString();
         }
         return strFromBlock;
+    }
+
+    public byte[] getBytesData() {
+        if (numBlock==0) {
+            return null;
+        } else {
+            int numBytes = numBlock*BOARD_SIZE;
+            byte bytes[] = new byte[numBytes];
+
+            for (int i=0; i<numBlock; i++) {
+                for (int j=0; j<BOARD_SIZE; j++) {
+                    bytes[i*BOARD_SIZE + j] = blocks[i].getByte(j);
+                }
+            }
+            return bytes;
+        }
+    }
+
+    public void setDataFromBytes(byte[] bytes) {
+
     }
 
     @Override

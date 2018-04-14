@@ -16,7 +16,7 @@ import java.util.List;
 public class ChessCipherEncryptor extends ChessCipherBase{
     private static int SIZE = ChessBoard.SIZE;
 
-    public static void encrypt(ChessCipherData data, ChessCipherKey key) {
+    public static void encryptOld(ChessCipherData data, ChessCipherKey key) {
         key.resetRoundState();
 
         encryptBlock(data.getBlock(0),key);
@@ -30,14 +30,26 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         }
     }
 
+    public static void encrypt(ChessCipherData data, ChessCipherKey key) {
+        key.resetRoundState();
+
+        System.out.println("num block="+data.numBlock);
+        System.out.println("encrypting...");
+
+        for (int i=0; i<data.numBlock; i++) {
+            encryptBlock(data.getBlock(i),key);
+        }
+    }
 
     public static void encryptBlock(ChessBoard block, ChessCipherKey key) {
+        System.out.println("encrypting block");
+
         chessGame = new ChessGame(PieceColor.WHITE);
         String subKey = key.getSubKey();
 
         //chessPermutation(block,key);
         shiftRight(block, subKey);
-        applySBox(block);
+        //applySBox(block);
         // todo
     }
 
@@ -84,9 +96,6 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         System.out.print("bytes after: ");
         block.printBytes();
     }
-
-
-
 
     private static void chessPermutation(ChessBoard block, ChessCipherKey key){
         for(int i=0;i<MOVE_LIMIT;i++){
