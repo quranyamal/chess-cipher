@@ -22,18 +22,21 @@ public class MainChessCipher {
     static void encryptDecryptTest2() {
         ChessCipher cipher = new ChessCipher();
 
-        String plainText = "The quick brown fox jumps over the lazy dog";
+        //String plainText = "The quick brown fox jumps over the lazy dog";
 
-        //String plainText = "amalqura";
+        String plainText = "AAAAZZZZBBBBYYYYCCCCXXXX123";
         cipher.setData(plainText);
-        cipher.setKey("ABC");
+        cipher.setKey("XYZ");
         System.out.println("\nplain : " + plainText);
 
         cipher.encrypt();
         String cipherText = cipher.getData().toString();
+
+        byte[] cipherBytes;
+        cipherBytes = cipher.getData().getBytesData();
         System.out.println("\ncipher: " + cipherText);
 
-        cipher.setData(cipherText);
+        cipher.setData(cipherBytes);
 
         cipher.decrypt();
         String reversedText = cipher.getData().toString();

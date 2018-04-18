@@ -1,8 +1,5 @@
 package chesscipher.model;
 
-import chesscipher.model.ChessBoard;
-
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public class ChessCipherData {
@@ -10,7 +7,8 @@ public class ChessCipherData {
     public static final int BLOCK_SIZE = BOARD_SIZE*BOARD_SIZE;
     private String rawDataStr;
     private String tmpData; // isinya concat blok2 data yang sedang dienkripsi/dekripsi
-    
+    private byte bytes[];
+
     public int numBlock;
     public ChessBoard blocks[];    // chess board = data block
     
@@ -18,14 +16,23 @@ public class ChessCipherData {
         rawDataStr = data;
         numBlock = (data.length()/8) + (data.length()%8==0 ? 0 : 1);
         blocks = new ChessBoard[numBlock];
+        bytes = new byte[8];
         tmpData = "";
-        initBlocks();
+        initBlocks(data);
     }
 
-    public ChessCipherData(byte[] bytes) {
-        numBlock = (bytes.length/8) + (bytes.length%8==0 ? 0 : 1);
+    public ChessCipherData(byte[] data) {
+        bytes = data;
+        numBlock = (data.length/8) + (data.length%8==0 ? 0 : 1);
         blocks = new ChessBoard[numBlock];
-        initBlocksFromBytes(bytes);
+        bytes = new byte[8];
+        initBlocks(data);
+    }
+
+    private void initBytes(byte[] bytes_) {
+        for (int i=0; i<8; i++) {
+            bytes[i] = bytes_[i];
+        }
     }
 
     private void initBlocksFromBytes(byte[] bytes) {
@@ -37,22 +44,7 @@ public class ChessCipherData {
         //initLastBlockFromBytes();
     }
 
-    private void initLastBlockFromBytes() {
-        String subStr = rawDataStr.substring((numBlock-1)*BOARD_SIZE);
-
-        if (subStr.length()==8) {
-            System.out.println("LAST BLOCK IS NOT PADDED");
-        } else {
-            System.out.println("LAST BLOCK IS PADDED");
-            for (int i=subStr.length(); i<BOARD_SIZE; i++) {
-                subStr = subStr + (char)0;
-            }
-        }
-        blocks[numBlock-1] = new ChessBoard(subStr);
-        tmpData += blocks[numBlock-1];
-    }
-
-    private void initBlocks() {
+    private void initBlocks(String data) {
         for (int i=0; i<numBlock-1; i++) {
             String subStr = rawDataStr.substring(i*8, (i+1)*8);
             System.out.println("substring:" + subStr);
@@ -61,10 +53,20 @@ public class ChessCipherData {
             tmpData = tmpData + blocks[i].toString();
             
         }
-        initLastBlock();
+        initLastBlock(data);
     }
-    
-    private void initLastBlock() {
+
+    private void initBlocks(byte[] data) {
+        for (int i=0; i<numBlock-1; i++) {
+            byte[] subData = Arrays.copyOfRange(data,i*8, (i+1)*8);
+            System.out.println("subdata:" + subData.toString());
+            blocks[i] = new ChessBoard(subData);
+        }
+        byte[] subData = Arrays.copyOfRange(data,(numBlock-1)*8, numBlock*8);
+        initLastBlock(subData);
+    }
+
+    private void initLastBlock(String data) {
         String subStr = rawDataStr.substring((numBlock-1)*BOARD_SIZE);
         
         if (subStr.length()==8) {
@@ -78,7 +80,19 @@ public class ChessCipherData {
         blocks[numBlock-1] = new ChessBoard(subStr);
         tmpData += blocks[numBlock-1];
     }
-    
+
+    private void initLastBlock(byte[] data) {
+        if (data.length==8) {
+            System.out.println("LAST BLOCK IS NOT PADDED");
+        } else {
+            System.out.println("LAST BLOCK IS PADDED");
+            for (int i=data.length; i<BOARD_SIZE; i++) {
+                data[i] = 0;
+            }
+        }
+        blocks[numBlock-1] = new ChessBoard(data);
+    }
+
     public String getDataStr() {
         return rawDataStr;
     }
@@ -115,10 +129,6 @@ public class ChessCipherData {
             }
             return bytes;
         }
-    }
-
-    public void setDataFromBytes(byte[] bytes) {
-
     }
 
     @Override

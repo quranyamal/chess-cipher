@@ -76,7 +76,9 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         char[] chars = subKey.toCharArray();
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
-            byt += ((int) chars[i] - 64) % 255;
+            System.out.print(byt);
+            byt += (int) chars[i]% 255;
+            System.out.println(" to " + byt);
             block.setByte(i, byt);
         }
     }
@@ -116,5 +118,9 @@ public class ChessCipherEncryptor extends ChessCipherBase{
                 e.printStackTrace();
             }
         }
+    }
+
+    public static int byteToUnsignedInt(byte b) {
+        return 0x00 << 24 | b & 0xff;
     }
 }

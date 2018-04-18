@@ -82,7 +82,9 @@ public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard c
         char[] chars = subKey.toCharArray();
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
-            byt -= (255 + (int) chars[i] - 64) % 255;
+            System.out.print(byt);
+            byt -= (255 + (int) chars[i]) % 255;
+            System.out.println(" to " + byt);
             block.setByte(i, byt);
         }
     }

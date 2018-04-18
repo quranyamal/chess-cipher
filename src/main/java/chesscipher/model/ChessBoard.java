@@ -3,6 +3,7 @@ package chesscipher.model;
 public class ChessBoard {
     public static final int SIZE = 8;
     public boolean[][] matrix; // !=0 -> true, 0->false
+    public byte[] bytes;
 
     public ChessBoard(boolean[][] mtr) {
         matrix = mtr;
@@ -11,14 +12,18 @@ public class ChessBoard {
     public ChessBoard(String str) {
         if (str.length()!=SIZE) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
         matrix = new boolean[SIZE][SIZE];
+        bytes = new byte[SIZE];
         setMatrix(str);
     }
 
-    public ChessBoard(byte[] bytes) {
-        if (bytes.length!=SIZE*2) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
+    public ChessBoard(byte[] bytes_) {
+        System.out.println("running constructor-2 chessboard");
+        if (bytes_.length!=SIZE) System.out.println("STRLEN!=SIZE HARUSNYA EROR SIH");
         matrix = new boolean[SIZE][SIZE];
+        bytes = new byte[SIZE];
         for (int i=0; i<SIZE; i++) {
-            setByte(i, bytes[i]);
+            setByte(i, bytes_[i]);
+            System.out.println("setting bytes-"+i+" to "+bytes_[i]);
         }
     }
 
@@ -56,9 +61,10 @@ public class ChessBoard {
         return encodeBools(matrix[idx]);
     }
 
-    public void setByte(int idx, byte bytes) {
-        int val = bytes;
+    public void setByte(int idx, byte byte_) {
+        int val = byte_;
         for (int col = 0; col < 8; col++) {
+            bytes[col] = byte_;
             matrix[idx][col] = (val & 128) != 0;
             val <<= 1;
         }
