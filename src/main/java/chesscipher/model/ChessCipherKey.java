@@ -8,9 +8,9 @@ import java.util.Random;
 
 public class ChessCipherKey {
     // nanti disesuaikan
-    static final int MAX_ROUND = 8;
-    static final int KEY_LENGTH = 8;
-    static final int SUBKEY_LENGTH = 1;
+    static final int MAX_ROUND = 3;
+    static final int KEY_LENGTH = 24;
+    static final int SUBKEY_LENGTH = 8;
     
     String key;
     int roundState;

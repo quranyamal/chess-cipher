@@ -12,7 +12,6 @@ import chesscipher.model.ChessGlobVar;
 import java.util.Arrays;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ChessCipherDecryptor extends ChessCipherBase{
@@ -55,8 +54,9 @@ public class ChessCipherDecryptor extends ChessCipherBase{
         String subKey = key.getSubKey();
 //        shiftBlockLeft(block, subKey);
 
-        //revertSBox(block);
-        shiftLeft(block, subKey);
+        //revertKnightTourSubstitution(block);
+        //invertSBox(block);
+        invertVigenereShift(block, subKey);
         //chessPermutation(block,key);
         // todo
     }
@@ -70,10 +70,19 @@ public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard c
         decryptBlock(currBlock,newKey);
     }
 
-    public static void shiftLeft(ChessBoard block, String subKey) {
+    public static void shiftLeft(ChessBoard block) {
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
             byt--;
+            block.setByte(i, byt);
+        }
+    }
+
+    public static void invertVigenereShift(ChessBoard block, String subKey) {
+        char[] chars = subKey.toCharArray();
+        for (int i=0; i<ChessBoard.SIZE; i++) {
+            byte byt = block.getByte(i);
+            byt -= (255 + (int) chars[i] - 64) % 255;
             block.setByte(i, byt);
         }
     }
@@ -91,7 +100,7 @@ public static void decryptWithDiffusion(List<ChessBoard> encrypted, ChessBoard c
         }
     }
 
-    private static void revertSBox(ChessBoard block) {
+    private static void invertSBox(ChessBoard block) {
         System.out.println("Revert SBox");
         System.out.print("bytes before: ");
         block.printBytes();

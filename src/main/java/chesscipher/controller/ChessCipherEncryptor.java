@@ -48,8 +48,9 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         String subKey = key.getSubKey();
 
         //chessPermutation(block,key);
-        shiftRight(block, subKey);
+        vigenereShift(block, subKey);
         //applySBox(block);
+        //applyKnightTourSubstitution(block);
         // todo
     }
 
@@ -62,10 +63,20 @@ public class ChessCipherEncryptor extends ChessCipherBase{
         encryptBlock(currBlock,newKey);
     }
 
-    public static void shiftRight(ChessBoard block, String subKey) {
+    public static void shiftRight(ChessBoard block) {
         for (int i=0; i<ChessBoard.SIZE; i++) {
             byte byt = block.getByte(i);
             byt++;
+            block.setByte(i, byt);
+        }
+    }
+
+    public static void vigenereShift(ChessBoard block, String subKey) {
+        System.out.println("vigenere shift with subkey: " + subKey);
+        char[] chars = subKey.toCharArray();
+        for (int i=0; i<ChessBoard.SIZE; i++) {
+            byte byt = block.getByte(i);
+            byt += ((int) chars[i] - 64) % 255;
             block.setByte(i, byt);
         }
     }

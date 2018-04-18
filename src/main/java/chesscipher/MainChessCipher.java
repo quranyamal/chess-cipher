@@ -22,9 +22,11 @@ public class MainChessCipher {
     static void encryptDecryptTest2() {
         ChessCipher cipher = new ChessCipher();
 
-        String plainText = "ABCDEFGH";
+        String plainText = "The quick brown fox jumps over the lazy dog";
+
+        //String plainText = "amalqura";
         cipher.setData(plainText);
-        cipher.setKey("GAJAH");
+        cipher.setKey("ABC");
         System.out.println("\nplain : " + plainText);
 
         cipher.encrypt();
